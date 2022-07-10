@@ -1,0 +1,21 @@
+FROM node:18-alpine
+
+# Set environment
+ENV APP_DIR=/app APP_PORT=3000
+
+# Set working directory (mkdir /app && cd /app)
+WORKDIR ${APP_DIR}
+
+# Copy files from project root into working directory
+COPY . ${APP_DIR}
+
+# Install
+RUN yarn install
+RUN yarn global add serve
+#EXPOSE 3000
+
+# Build
+RUN yarn run build
+
+# Serve
+CMD ["sh", "-c", "serve -s ${APP_DIR}/build"]

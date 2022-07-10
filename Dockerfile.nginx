@@ -1,0 +1,31 @@
+#########################################################################
+# Stage 1: Build the React App for production
+#########################################################################
+
+FROM node:18-alpine as builder
+LABEL stage=builder
+
+# Set environment
+ENV APP_DIR=/app APP_PORT=3000
+
+# Set working directory (mkdir /app && cd /app)
+WORKDIR ${APP_DIR}
+
+# Copy files from project root into working directory
+COPY . ${APP_DIR}
+
+# Install
+RUN yarn install
+#EXPOSE 3000
+
+# Build
+RUN yarn run build
+
+#########################################################################
+# Stage 2: Build Nginx Image with React App (Static Files)
+#########################################################################
+
+FROM nginx:1.23.0-alpine
+COPY --from=builder /app/deploy/nginx.conf /etc/nginx
+COPY --from=builder /app/build /usr/share/nginx/html
+CMD ["nginx", "-g", "daemon off;"]
