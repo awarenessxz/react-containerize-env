@@ -24,7 +24,7 @@ This section will cover how to dockerize a React web application and serve it wi
 2. Deploy the web application
 
     ```bash
-    docker run -it --rm -p 3000:3000 react-nginx:latest
+    docker run -it --rm -p 3000:3000 --env-file ./.env.staging react-nginx:latest
     ```
 
 ### Node Version
@@ -42,11 +42,17 @@ This section will cover how to dockerize a React web application and serve it wi
 ## Summary
 
 1. Nginx vs Node image
-    - nginx container image is much smaller and faster.
-    - nginx uses the static build which makes it hard to replace environment variables in run-time.
-2. Set environment variables in run-time.
-    - Node: 
-    - Nginx: 
+    - nginx container image is much smaller.
+        ```bash
+        REPOSITORY    TAG      IMAGE ID       CREATED       SIZE
+        react-nginx   latest   7eaf2c6ed9fe   2 hours ago   78.2MB
+        react-node    latest   e3d69785a855   2 hours ago   478MB
+        ```
+    - nginx container image is much faster.
+    - nginx uses the static bundles which makes it hard to replace environment variables in run-time.
+2. Build-Time vs Run-Time
+    - Instead of building 3x times (one for each environment), we only need to build once. This greatly cut our build 
+      and deployment time.
 
 ## References
 

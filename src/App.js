@@ -8,7 +8,8 @@ const App = () => {
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Node Environment ==> {process.env.NODE_ENV} <br/>
-          Loading Environment Variable ==> {process.env.REACT_APP_TEST_VALUE}
+          Loading Environment Variable (process.env) ==> {process.env.REACT_APP_TEST_VALUE} <br/>
+          Loading Environment Variable (runtime-env-cra) ==> {window.__RUNTIME_CONFIG__.REACT_APP_TEST_VALUE}
         </p>
       </header>
     </div>

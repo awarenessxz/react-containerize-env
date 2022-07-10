@@ -26,6 +26,20 @@ RUN yarn run build
 #########################################################################
 
 FROM nginx:1.23.0-alpine
+
+# Copy static bundle files to nginx
 COPY --from=builder /app/deploy/nginx.conf /etc/nginx
 COPY --from=builder /app/build /usr/share/nginx/html
-CMD ["nginx", "-g", "daemon off;"]
+COPY --from=builder /app/.env /usr/share/nginx/html/.env
+
+# Install runtime-env-cra
+RUN apk add --update nodejs
+RUN apk add --update npm
+RUN npm install -g runtime-env-cra@0.2.2
+
+# Set working directory
+WORKDIR /usr/share/nginx/html
+
+# Serve
+#CMD ["nginx", "-g", "daemon off;"]
+CMD ["/bin/sh", "-c", "runtime-env-cra && nginx -g \"daemon off;\""]

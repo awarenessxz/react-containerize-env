@@ -5,6 +5,7 @@
 # Build Files
 build
 dist
+public/runtime-env.js
 
 # Logs
 logs
